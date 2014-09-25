@@ -1,0 +1,89 @@
+[data-plugin="switcher"]
+  position: relative
+  .container
+    width: 100%
+    position: relative
+    overflow: hidden
+    .item
+      position: absolute
+      top: 0
+      display: none
+      transition: left 1s
+    .active
+      left: 0
+      display: block
+      position: relative
+      transition: left 1.3s
+      z-index: 2
+    .left
+      left: 100%
+    .right
+      left: -100%
+    .left, .right
+      display: block
+    .next.left, .prev.right
+      left: 0
+    .active.left
+      left: -100%
+    .active.right
+      left: 100%
+  .indicator
+    position: absolute
+    bottom: 20px
+    right: 20px
+    z-index: 3
+    ul
+      list-style: none
+    li
+      float: left
+      margin-right: 12px
+      opacity: .5
+      cursor: pointer
+      i
+        display: block
+        width: 12px
+        height: 12px
+        border-radius: 12px
+        background: #fff
+    li.active
+      opacity: 1
+  .controls
+    [data-direction]
+      position: absolute
+      width: 48px
+      height: 48px
+      line-height: 48px
+      z-index: 3
+      text-align: center
+      text-decoration: none
+      border-radius: 48px
+      color: #fff
+      font-size: 32px
+      background: rgba(0, 0, 0, 0.4)
+      top: 50%
+      margin-top: -24px
+      opacity: .2
+      transition: opacity 1s, background 1s
+      &:hover
+        opacity: 1
+        background: rgba(0, 0, 0, 0.6)
+    .left
+      left: 10px
+    .right
+      right: 10px
+
+[data-plugin="switcher"][data-effect="fade"]
+  .container
+    .item
+      transition: opacity 2s
+    .active
+      opacity: 1
+      transition: opacity 2s
+    .next
+      opacity: 0
+    .left, .right, .active.left, .active.right
+      left: 0
+    .next.left, .next.right
+      opacity: 1
+    .active.left, .active.right
+      opacity: 0

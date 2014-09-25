@@ -1,0 +1,117 @@
+[data-plugin="switcher"] {
+  position: relative;
+}
+[data-plugin="switcher"] .container {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+[data-plugin="switcher"] .container .item {
+  position: absolute;
+  top: 0;
+  display: none;
+  transition: left 1s;
+}
+[data-plugin="switcher"] .container .active {
+  left: 0;
+  display: block;
+  position: relative;
+  transition: left 1.3s;
+  z-index: 2;
+}
+[data-plugin="switcher"] .container .left {
+  left: 100%;
+}
+[data-plugin="switcher"] .container .right {
+  left: -100%;
+}
+[data-plugin="switcher"] .container .left,
+[data-plugin="switcher"] .container .right {
+  display: block;
+}
+[data-plugin="switcher"] .container .next.left,
+[data-plugin="switcher"] .container .prev.right {
+  left: 0;
+}
+[data-plugin="switcher"] .container .active.left {
+  left: -100%;
+}
+[data-plugin="switcher"] .container .active.right {
+  left: 100%;
+}
+[data-plugin="switcher"] .indicator {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 3;
+}
+[data-plugin="switcher"] .indicator ul {
+  list-style: none;
+}
+[data-plugin="switcher"] .indicator li {
+  float: left;
+  margin-right: 12px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+[data-plugin="switcher"] .indicator li i {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 12px;
+  background: #fff;
+}
+[data-plugin="switcher"] .indicator li.active {
+  opacity: 1;
+}
+[data-plugin="switcher"] .controls [data-direction] {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
+  z-index: 3;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 48px;
+  color: #fff;
+  font-size: 32px;
+  background: rgba(0,0,0,0.4);
+  top: 50%;
+  margin-top: -24px;
+  opacity: 0.2;
+  transition: opacity 1s, background 1s;
+}
+[data-plugin="switcher"] .controls [data-direction]:hover {
+  opacity: 1;
+  background: rgba(0,0,0,0.6);
+}
+[data-plugin="switcher"] .controls .left {
+  left: 10px;
+}
+[data-plugin="switcher"] .controls .right {
+  right: 10px;
+}
+[data-plugin="switcher"][data-effect="fade"] .container .item {
+  transition: opacity 2s;
+}
+[data-plugin="switcher"][data-effect="fade"] .container .active {
+  opacity: 1;
+  transition: opacity 2s;
+}
+[data-plugin="switcher"][data-effect="fade"] .container .next {
+  opacity: 0;
+}
+[data-plugin="switcher"][data-effect="fade"] .container .left,
+[data-plugin="switcher"][data-effect="fade"] .container .right,
+[data-plugin="switcher"][data-effect="fade"] .container .active.left,
+[data-plugin="switcher"][data-effect="fade"] .container .active.right {
+  left: 0;
+}
+[data-plugin="switcher"][data-effect="fade"] .container .next.left,
+[data-plugin="switcher"][data-effect="fade"] .container .next.right {
+  opacity: 1;
+}
+[data-plugin="switcher"][data-effect="fade"] .container .active.left,
+[data-plugin="switcher"][data-effect="fade"] .container .active.right {
+  opacity: 0;
+}
