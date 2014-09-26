@@ -100,16 +100,20 @@
 }
 [data-plugin="switcher"][data-effect="fade"] .container .active {
   opacity: 1;
+  filter: alpha(opacity=100);
 }
 [data-plugin="switcher"][data-effect="fade"] .container .next,
 [data-plugin="switcher"][data-effect="fade"] .container .prev {
   display: block;
   opacity: 0;
+  filter: alpha(opacity=0);
 }
 [data-plugin="switcher"][data-effect="fade"] .container .next.fade,
 [data-plugin="switcher"][data-effect="fade"] .container .prev.fade {
   opacity: 1;
+  filter: alpha(opacity=100);
 }
 [data-plugin="switcher"][data-effect="fade"] .container .active.fade {
   opacity: 0;
+  filter: alpha(opacity=0);
 }

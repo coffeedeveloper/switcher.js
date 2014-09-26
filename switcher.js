@@ -1,7 +1,6 @@
 ;(function ($) {
 
   var root = this
-  console.log(root)
 
   function Switcher (ele, opts) {
     this.opts       = opts || {}
@@ -15,7 +14,7 @@
     this.effect     = this.opts.effect || 'slide'
     this.klass      = this.getKlass()
     this.support    = {
-      transition: this.getTransitionEvent() == null
+      transition: this.getTransitionEvent() != null
     }
   }
 
@@ -122,17 +121,23 @@
         return
       }
 
-      if (that.effect == 'slide') {
-        $next.addClass(direction)
-        $next[0].offsetWidth
-        $active.addClass(direction)
-        that.$active = $next.addClass(type)
-      } else {
-        $active.addClass(direction)
-        that.$active = $next.addClass(type)
-        $next[0].offsetWidth
-        $next.addClass(direction)
-      }
+	  if (that.support.transition) {
+		if (that.effect == 'slide') {
+          $next.addClass(direction)
+          $next[0].offsetWidth
+          $active.addClass(direction)
+          that.$active = $next.addClass(type)
+	    } else {
+		  $active.addClass(direction)
+		  that.$active = $next.addClass(type)
+		  $next[0].offsetWidth
+		  $next.addClass(direction)
+		}
+	  } else {
+		$next.addClass(type)
+	    //$active.addClass(direction)
+	  }
+      
 
       that.$ele.trigger('switcher:start')
       that.inAnimate = true
@@ -155,7 +160,9 @@
           that    = this
       switch (this.effect) {
         case 'fade':
-          $active.animate({opcity: 0}, 2000, function () {
+          $active.animate({opacity: 0}, 2000, function () {
+		    $active.removeClass(that.klass.join(' ') + ' active').removeAttr('style')
+			$next.removeClass(that.klass.join(' ')).addClass('active').removeAttr('style')
             that.inAnimate = false
           })
           $next.animate({opacity: 1}, 2000)
