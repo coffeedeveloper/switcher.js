@@ -14,6 +14,9 @@
     this.inAnimate  = false
     this.effect     = this.opts.effect || 'slide'
     this.klass      = this.getKlass()
+    this.support    = {
+      transition: this.getTransitionEvent() == null
+    }
   }
 
   Switcher.fn = Switcher.prototype = {
@@ -134,14 +137,32 @@
       that.$ele.trigger('switcher:start')
       that.inAnimate = true
 
-      console.log(that.getTransitionEvent())
       that.$animateEle = { $active: $active, $next: $next }
-      $active.one(that.getTransitionEvent(), $.proxy(that['transition:end'], that))
+      if (that.support.transition) {
+        $active.one(that.getTransitionEvent(), $.proxy(that['transition:end'], that))
+      } else {
+        that['transition:polyfill']()
+      }
     },
     'transition:end': function () {
       this.$animateEle.$active.removeClass(this.klass.join(' ') + ' active')
       this.$animateEle.$next.removeClass(this.klass.join(' ')).addClass('active')
       this.inAnimate = false
+    },
+    'transition:polyfill': function () {
+      var $active = this.$animateEle.$active,
+          $next   = this.$animateEle.$next,
+          that    = this
+      switch (this.effect) {
+        case 'fade':
+          $active.animate({opcity: 0}, 2000, function () {
+            that.inAnimate = false
+          })
+          $next.animate({opacity: 1}, 2000)
+          break;
+        case 'slide':
+        default:
+      }
     }
   }
 
