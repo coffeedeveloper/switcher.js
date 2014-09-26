@@ -8,36 +8,12 @@
 }
 [data-plugin="switcher"] .container .item {
   position: absolute;
-  top: 0;
   display: none;
-  transition: left 1s;
+  top: 0;
 }
 [data-plugin="switcher"] .container .active {
-  left: 0;
-  display: block;
   position: relative;
-  transition: left 1.3s;
-  z-index: 2;
-}
-[data-plugin="switcher"] .container .left {
-  left: 100%;
-}
-[data-plugin="switcher"] .container .right {
-  left: -100%;
-}
-[data-plugin="switcher"] .container .left,
-[data-plugin="switcher"] .container .right {
   display: block;
-}
-[data-plugin="switcher"] .container .next.left,
-[data-plugin="switcher"] .container .prev.right {
-  left: 0;
-}
-[data-plugin="switcher"] .container .active.left {
-  left: -100%;
-}
-[data-plugin="switcher"] .container .active.right {
-  left: 100%;
 }
 [data-plugin="switcher"] .indicator {
   position: absolute;
@@ -91,27 +67,49 @@
 [data-plugin="switcher"] .controls .right {
   right: 10px;
 }
+[data-plugin="switcher"][data-effect="slide"] .container .item {
+  transition: left 1s;
+}
+[data-plugin="switcher"][data-effect="slide"] .container .active {
+  left: 0;
+  transition: left 1.3s;
+  z-index: 2;
+}
+[data-plugin="switcher"][data-effect="slide"] .container .left {
+  left: 100%;
+}
+[data-plugin="switcher"][data-effect="slide"] .container .right {
+  left: -100%;
+}
+[data-plugin="switcher"][data-effect="slide"] .container .left,
+[data-plugin="switcher"][data-effect="slide"] .container .right {
+  display: block;
+}
+[data-plugin="switcher"][data-effect="slide"] .container .next.left,
+[data-plugin="switcher"][data-effect="slide"] .container .prev.right {
+  left: 0;
+}
+[data-plugin="switcher"][data-effect="slide"] .container .active.left {
+  left: -100%;
+}
+[data-plugin="switcher"][data-effect="slide"] .container .active.right {
+  left: 100%;
+}
 [data-plugin="switcher"][data-effect="fade"] .container .item {
   transition: opacity 2s;
 }
 [data-plugin="switcher"][data-effect="fade"] .container .active {
   opacity: 1;
-  transition: opacity 2s;
 }
-[data-plugin="switcher"][data-effect="fade"] .container .next {
+[data-plugin="switcher"][data-effect="fade"] .container .next,
+[data-plugin="switcher"][data-effect="fade"] .container .prev {
+  display: block;
   opacity: 0;
 }
-[data-plugin="switcher"][data-effect="fade"] .container .left,
-[data-plugin="switcher"][data-effect="fade"] .container .right,
-[data-plugin="switcher"][data-effect="fade"] .container .active.left,
-[data-plugin="switcher"][data-effect="fade"] .container .active.right {
-  left: 0;
-}
-[data-plugin="switcher"][data-effect="fade"] .container .next.left,
-[data-plugin="switcher"][data-effect="fade"] .container .next.right {
+[data-plugin="switcher"][data-effect="fade"] .container .next.fade,
+[data-plugin="switcher"][data-effect="fade"] .container .prev.fade {
   opacity: 1;
 }
-[data-plugin="switcher"][data-effect="fade"] .container .active.left,
-[data-plugin="switcher"][data-effect="fade"] .container .active.right {
+[data-plugin="switcher"][data-effect="fade"] .container .active.fade {
   opacity: 0;
 }

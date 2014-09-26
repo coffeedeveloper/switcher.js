@@ -1,6 +1,7 @@
 ;(function ($) {
 
   var root = this
+  console.log(root)
 
   function Switcher (ele, opts) {
     this.opts       = opts || {}
@@ -8,19 +9,23 @@
     this.$items     = this.opts.$items || this.$ele.find('.container > .item')
     this.$controls  = this.opts.$controls || this.$ele.find('.controls')
     this.$indicator = this.opts.$indicator || this.$ele.find('.indicator')
-    this.$active    =
+    this.$active    = null
     this.interval   = null
-    this.klass      = ['left', 'right', 'next', 'prev']
     this.inAnimate  = false
     this.effect     = this.opts.effect || 'slide'
+    this.klass      = this.getKlass()
   }
 
   Switcher.fn = Switcher.prototype = {
     init: function () {
-      var that = this
-      if (that.opts.interval) {
-        that['interval:start']()
+      if (this.opts.interval) {
+        this['interval:start']()
       }
+      this['bind:event']()
+    },
+    'bind:event': function () {
+      var that = this
+
       this.$controls.on('click', '[data-direction]', function () {
         that.animate($(this).data('direction'))
       })
@@ -31,14 +36,10 @@
 
       this.$ele.on({
         'mouseenter': function () {
-          if (that.opts.interval) {
-            that['interval:stop']()
-          }
+          if (that.opts.interval) that['interval:stop']()
         },
         'mouseleave': function () {
-          if (that.opts.interval) {
-            that['interval:start']()
-          }
+          if (that.opts.interval) that['interval:start']()
         },
         'switcher:start': function () {
           var index = that.getIndex(that.$active)
@@ -53,10 +54,26 @@
       var that = this
       this.interval = window.setInterval(function () {
         that.animate('next')
-      }, that.opts.delay || 2000)
+      }, that.opts.delay || 3000)
     },
     'interval:stop': function () {
       root.clearInterval(this.interval)
+    },
+    getTransitionEvent: function () {
+      var el = document.body || document.documentElement
+          e  = null,
+          transEndEventNames = {
+            WebkitTransition : 'webkitTransitionEnd',
+            MozTransition    : 'transitionend',
+            OTransition      : 'oTransitionEnd otransitionend',
+            transition       : 'transitionend'
+          }
+
+      for (var name in transEndEventNames) {
+        if (el.style[name] !== undefined) {
+          return transEndEventNames[name]
+        }
+      }
     },
     getNext: function (type, $active) {
       var index = this.getIndex($active),
@@ -66,6 +83,28 @@
     getIndex: function (item) {
       return this.$items.index(item)
     },
+    getKlass: function () {
+      var arr = []
+      switch (this.effect) {
+        case 'fade':
+          arr = ['next', 'prev', 'fade']
+          break;
+        case 'slide':
+        default:
+          arr = ['left', 'right', 'next', 'prev']
+      }
+      return arr
+    },
+    getDirection: function (type) {
+      switch (this.effect) {
+        case 'fade':
+          return 'fade'
+          break;
+        case 'slide':
+        default:
+          return type == 'next' ? 'left' : 'right'
+      }
+    },
     to: function (index) {
       var next = this.$items.eq(index)
           curr = this.getIndex(this.$active)
@@ -74,33 +113,41 @@
     animate: function (type, next) {
       var $active   = this.$ele.find('.item.active'),
           $next     = next || this.getNext(type, $active),
-          direction = type == 'next' ? 'left' : 'right',
+          direction = this.getDirection(type)
           that      = this
       if ($next.hasClass('active') || that.inAnimate) {
         return
       }
 
-      $next.addClass(direction)
-      $next[0].offsetWidth
-      $active.addClass(direction)
-      that.$active = $next.addClass(type)
+      if (that.effect == 'slide') {
+        $next.addClass(direction)
+        $next[0].offsetWidth
+        $active.addClass(direction)
+        that.$active = $next.addClass(type)
+      } else {
+        $active.addClass(direction)
+        that.$active = $next.addClass(type)
+        $next[0].offsetWidth
+        $next.addClass(direction)
+      }
 
       that.$ele.trigger('switcher:start')
       that.inAnimate = true
 
-      $active.one('webkitTransitionEnd', function () {
-        $active.removeClass(that.klass.join(' ') + ' active')
-        $next.removeClass(that.klass.join(' ')).addClass('active')
-        that.inAnimate = false
-      })
-
+      console.log(that.getTransitionEvent())
+      that.$animateEle = { $active: $active, $next: $next }
+      $active.one(that.getTransitionEvent(), $.proxy(that['transition:end'], that))
     },
+    'transition:end': function () {
+      this.$animateEle.$active.removeClass(this.klass.join(' ') + ' active')
+      this.$animateEle.$next.removeClass(this.klass.join(' ')).addClass('active')
+      this.inAnimate = false
+    }
   }
 
   $.fn.switcher = function (option) {
     return this.each(function () {
-      var switcher = new Switcher($(this), $(this).data())
-      switcher.init()
+      new Switcher($(this), $(this).data()).init()
     })
   }
 
